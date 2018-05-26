@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build:assets && npm run build:js && npm run build:sass",
-		"build:legacy": "npm run build:assets && npm run build:js:legacy && npm run build:sass",
+    "build:legacy": "npm run build:assets && npm run build:js:legacy && npm run build:sass",
     "build:js": "browserify src/js/index.js -o dist/www/js/app.js --debug",
-		"build:js:legacy": "browserify -t [ babelify --global --presets [ es2015 ] --plugins transform-object-assign ] src/js/index.js -o dist/www/js/app.js --debug",
+    "build:js:legacy": "browserify -t [ babelify --global --presets [ es2015 ] --plugins transform-object-assign ] src/js/index.js -o dist/www/js/app.js --debug",
     "build:sass": "node-sass --source-map dist/www/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/www/css/style.css",
     "build:assets": "node bin/move-assets.js",
     "watch": "npm run watch:js & npm run watch:sass & npm run watch:assets & npm run livereload",
@@ -18,7 +18,7 @@
     "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
     "livereload": "livereload dist/www/**/*.css -d",
     "start": "npm run build && serve --path dist/www & npm run watch",
-		"start:cordova": "npm run build:legacy && cd www & cordova run android",
+    "start:cordova": "npm run build:legacy && cd www & cordova run android",
     "sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
   },
   "author": "Alex Milanov <alex@i4web.biz>",
@@ -29,9 +29,12 @@
     "font-awesome": "^4.7.0",
     "iblokz-data": "^1.2.0",
     "iblokz-snabbdom-helpers": "^1.2.0",
+    "raf-stream": "^3.0.0",
     "rx": "^4.1.0",
+    "rx-node": "^1.0.2",
     "snabbdom": "^0.5.4",
-    "superagent": "^3.3.1"
+    "superagent": "^3.3.1",
+    "vexflow": "^1.2.84"
   },
   "devDependencies": {
     "browserify": "^13.1.1",

@@ -15,6 +15,10 @@ let ui = require('./ui');
 let actions$;
 const state$ = new Rx.BehaviorSubject();
 
+// services
+// staff
+let staff = require('./services/staff');
+
 // hot reloading
 if (module.hot) {
 	// actions
@@ -48,6 +52,9 @@ actions$
 // state -> ui
 const ui$ = state$.map(state => ui({state, actions}));
 vdom.patchStream(ui$, '#ui');
+
+// services
+staff.hook({state$, actions});
 
 // livereload impl.
 if (module.hot) {
