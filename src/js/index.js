@@ -33,6 +33,15 @@ if (module.hot) {
 		ui = require('./ui');
 		actions.stream.onNext(state => state);
 	});
+	// services
+	// staff
+	module.hot.accept("./services/staff", function() {
+		console.log('updating staff');
+		staff = require('./services/staff');
+		staff.hook({state$, actions});
+		actions.ping();
+		// state$.connect();
+	});
 } else {
 	actions$ = actions.stream;
 }

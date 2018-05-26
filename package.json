@@ -17,7 +17,7 @@
     "watch:sass": "nodemon -w src/sass -e sass -x 'npm run build:sass'",
     "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
     "livereload": "livereload dist/www/**/*.css -d",
-    "start": "npm run build && serve --path dist/www & npm run watch",
+    "start": "npm run build:legacy && serve --path dist/www & npm run watch:legacy",
     "start:cordova": "npm run build:legacy && cd www & cordova run android",
     "sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
   },
@@ -37,6 +37,10 @@
     "vexflow": "^1.2.84"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "browserify-hmr": "^0.3.5",
     "eslint": "^3.12.2",

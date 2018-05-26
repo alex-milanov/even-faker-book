@@ -10,6 +10,7 @@ const initial = {
 };
 
 // actions
+const ping = () => state => state;
 const set = (key, value) => state => obj.patch(state, key, value);
 const toggle = key => state => obj.patch(state, key, !obj.sub(state, key));
 const arrToggle = (key, value) => state =>
@@ -19,7 +20,7 @@ const arrToggle = (key, value) => state =>
 
 module.exports = {
 	initial,
-	counter,
+	ping,
 	set,
 	toggle,
 	arrToggle
