@@ -1,0 +1,11 @@
+# Mac
+.DS_Store
+
+# Just all platforms
+platforms
+
+# plugins
+plugins
+
+# res
+resources/signing
