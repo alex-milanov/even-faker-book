@@ -2,16 +2,16 @@
 
 // dom
 const {
-	h1, a, div, header, canvas,
+	h1, h2, a, div, header, canvas,
 	section, button, span
 } = require('iblokz-snabbdom-helpers');
 // components
-const counter = require('./counter');
 
 module.exports = ({state, actions}) => section('#ui', [
 	header([
-		h1('TheFakerBook')
+		h1('EvenFakerBook')
 	]),
-	div('#staff[width=800][height=600]')
+	h2('So What'),
+	div(`#staff[width=${state.viewport.screen.width}][height=${state.viewport.screen.height - 120}]`)
 	// counter({state, actions})
 ]);

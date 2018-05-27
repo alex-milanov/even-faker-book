@@ -18,6 +18,7 @@ const state$ = new Rx.BehaviorSubject();
 // services
 // staff
 let staff = require('./services/staff');
+let viewport = require('./services/viewport');
 
 // hot reloading
 if (module.hot) {
@@ -40,7 +41,12 @@ if (module.hot) {
 		staff = require('./services/staff');
 		staff.hook({state$, actions});
 		actions.ping();
-		// state$.connect();
+	});
+	module.hot.accept("./services/viewport", function() {
+		console.log('updating viewport');
+		viewport = require('./services/viewport');
+		viewport.hook({state$, actions});
+		actions.ping();
 	});
 } else {
 	actions$ = actions.stream;
@@ -64,6 +70,7 @@ vdom.patchStream(ui$, '#ui');
 
 // services
 staff.hook({state$, actions});
+viewport.hook({state$, actions});
 
 // livereload impl.
 if (module.hot) {

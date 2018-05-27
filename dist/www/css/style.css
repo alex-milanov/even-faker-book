@@ -2378,5 +2378,14 @@ h1, h2, h3, h4 {
     text-align: center; }
     #ui header h1 {
       display: inline-block; }
+  #ui h2 {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    font-size: 4em;
+    line-height: 50px; }
 
 /*# sourceMappingURL=style.css.map */

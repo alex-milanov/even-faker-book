@@ -18,7 +18,7 @@
     "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
     "livereload": "livereload dist/www/**/*.css -d",
     "start": "npm run build:legacy && serve --path dist/www & npm run watch:legacy",
-    "start:cordova": "npm run build:legacy && cd www & cordova run android",
+    "start:cordova": "npm run build:legacy && cd dist && cordova run android",
     "sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
   },
   "author": "Alex Milanov <alex@i4web.biz>",

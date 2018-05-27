@@ -12,12 +12,12 @@ window.StaveText = StaveText;
 
 let unhook = {};
 
-const drawMeasure = (chord, context, mi = 0, mpl = 4) => {
-	let width = (800 / mpl) - 20;
-	var stave = new VF.Stave(10 + (mi % mpl) * width, 40 + ((mi - (mi % mpl)) / mpl * 70), width, {
+const drawMeasure = (context, chord, mi = 0, x = 10, y = 40, w = 800, h = 70, mpl = 4) => {
+	let width = (w / mpl) - 20;
+	var stave = new VF.Stave(x + (mi % mpl) * width, y + ((mi - (mi % mpl)) / mpl * h), width, {
 		num_lines: 5,
 		fill_style: '#ffffff',
-		measure: 2
+		left_bar: mi === 0 || (mi % mpl) > 0
 	});
 
 	var chordSymbol = new StaveText(chord, 3, {
@@ -30,7 +30,9 @@ const drawMeasure = (chord, context, mi = 0, mpl = 4) => {
 	stave.addModifier(chordSymbol);
 
 	// Add a clef and time signature.
-	if (mi === 0) stave.addClef("treble").addTimeSignature("4/4");
+	if (mi === 0 && y === 0) stave
+		// .addClef("treble")
+		.addTimeSignature("4/4");
 
 	// Connect it to the rendering context and draw!
 	stave.setContext(context).draw();
@@ -51,22 +53,34 @@ const hook = ({state$, actions}) => {
 
 				var renderer = new VF.Renderer(canvas, VF.Renderer.Backends.SVG);
 
+				const {width, height} = state.viewport.screen;
 				// Configure the rendering context.
-				renderer.resize(800, 600);
+				renderer.resize(width, height - 120);
 				var context = renderer.getContext();
 				context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
 				// Create a stave of width 400 at position 10, 40 on the canvas.
 				[
-					'D-11', '%', '%', '%',
-					'D-11', '%', '%', '%',
-					'D-11', '%', '%', '%',
-					'D-11', '%', '%', '%',
-					'Eb-11', '%', '%', '%',
-					'Eb-11', '%', '%', '%',
-					'D-11', '%', '%', '%',
-					'D-11', '%', '%', '%'
-				].forEach((chord, i) => drawMeasure(chord, context, i));
+					[
+						'D-11', '%', '%', '%',
+						'D-11', '%', '%', '%'
+					],
+					[
+						'D-11', '%', '%', '%',
+						'D-11', '%', '%', '%'
+					],
+					[
+						'Eb-11', '%', '%', '%',
+						'Eb-11', '%', '%', '%'
+					],
+					[
+						'D-11', '%', '%', '%',
+						'D-11', '%', '%', '%'
+					]
+				]
+					.forEach((part, k) =>
+						part.forEach((chord, i) =>
+							drawMeasure(context, chord, i, 10, (k * 2 * 70), width)));
 			})
 		);
 

@@ -7,6 +7,12 @@ const counter = require('./counter');
 
 // initial
 const initial = {
+	viewport: {
+		screen: {
+			width: 800,
+			height: 600
+		}
+	}
 };
 
 // actions
