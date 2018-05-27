@@ -2376,8 +2376,31 @@ h1, h2, h3, h4 {
     display: block;
     width: 100%;
     text-align: center; }
+    #ui header button {
+      margin: 0px;
+      padding: 0px;
+      display: inline-block;
+      box-sizing: border-box;
+      height: 50px;
+      line-height: 50px;
+      float: left; }
     #ui header h1 {
-      display: inline-block; }
+      display: inline-block;
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      margin-left: -150px;
+      width: 300px; }
+    #ui header input {
+      margin: 0px;
+      padding: 0px;
+      display: inline-block;
+      box-sizing: border-box;
+      height: 50px;
+      line-height: 50px;
+      float: right;
+      font-size: 18px;
+      width: 50px; }
   #ui h2 {
     margin: 0px;
     padding: 0px;

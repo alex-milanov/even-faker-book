@@ -3,10 +3,32 @@
 const {obj, arr} = require('iblokz-data');
 
 // namespaces=
-const counter = require('./counter');
+// const counter = require('./counter');
 
 // initial
 const initial = {
+	staff: {
+		mpl: 4,
+		showMelody: false,
+		piece: [
+			[
+				'D-11', '%', '%', '%',
+				'D-11', '%', '%', '%'
+			],
+			[
+				'D-11', '%', '%', '%',
+				'D-11', '%', '%', '%'
+			],
+			[
+				'Eb-11', '%', '%', '%',
+				'Eb-11', '%', '%', '%'
+			],
+			[
+				'D-11', '%', '%', '%',
+				'D-11', '%', '%', '%'
+			]
+		]
+	},
 	viewport: {
 		screen: {
 			width: 800,

@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Ceviche One';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/Ceviche+One_400_normal.eot); /* {{embedded-opentype-gf-url}} */
+    src: local('☺'),
+        url(../fonts/Ceviche+One_400_normal.eot?#iefix) format('embedded-opentype'), /* {{embedded-opentype-gf-url}} */
+        url(../fonts/Ceviche+One_400_normal.woff) format('woff'), /* http://fonts.gstatic.com/s/cevicheone/v8/gyB4hws1IcA6JzR-GB_JX5zabYw.woff */
+        url(../fonts/Ceviche+One_400_normal.ttf) format('truetype'), /* http://fonts.gstatic.com/s/cevicheone/v8/gyB4hws1IcA6JzR-GB_JX5zabY_7VqgY.ttf */
+        url(../fonts/Ceviche+One_400_normal.svg#Ceviche+One_400_normal) format('svg'); /* http://fonts.gstatic.com/l/font?kit=gyB4hws1IcA6JzR-GB_JX5zabY0&skey=c523f0ea346a3458&v=v8#CevicheOne */
+}
