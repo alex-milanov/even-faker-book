@@ -42,7 +42,7 @@ const drawMeasure = (context, chord, mi = 0, x = 10, y = 40, w = 800, h = 70, mp
 	stave.setContext(context).draw();
 };
 
-const drawMelody = renderer => {
+const drawMelody = (renderer, melodyLine) => {
 	var vf = new VF.Factory({renderer});
 	var score = vf[`EasyScore`]();
 	var system = vf[`System`]();
@@ -53,9 +53,15 @@ const drawMelody = renderer => {
 			width: 300
 		},
 		voices: [score.voice(
-			score.notes('B4/8/r')
-				.concat(score.beam(score.notes('B3/8, F4, G4')))
-				.concat(score.beam(score.notes('A4/8, B4, C5, A4', {stem: 'up'})))
+			melodyLine[0].reduce(
+				(notes, pattern) => [].concat(
+					notes,
+					pattern[0] === 'beam'
+						? score.beam(score.notes(...pattern.slice(1)))
+						: score.notes(...pattern)
+				),
+				[]
+			)
 		)]
 	}).addClef('treble').addTimeSignature('4/4');
 
@@ -78,7 +84,9 @@ const hook = ({state$, actions}) => {
 				var renderer = new VF.Renderer(canvas, VF.Renderer.Backends.SVG);
 
 				const {width} = state.viewport.screen;
-				let height = calcHeight(state.staff.piece, state.staff.mpl);
+				let piece = state.library[state.staff.piece];
+				let progression = state.library[state.staff.piece].progression;
+				let height = calcHeight(progression, state.staff.mpl);
 				// Configure the rendering context.
 
 				// Create a stave of width 400 at position 10, 40 on the canvas.
@@ -87,13 +95,13 @@ const hook = ({state$, actions}) => {
 					var context = renderer.getContext();
 					context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 					let tx = 0;
-					state.staff.piece.forEach((part, k) =>
+					progression.forEach((part, k) =>
 							part.forEach((chord, i) =>
 								drawMeasure(context, chord, i, 10,
-									calcHeight(state.staff.piece.slice(0, k), state.staff.mpl), width, 70, state.staff.mpl)));
+									calcHeight(progression.slice(0, k), state.staff.mpl), width, 70, state.staff.mpl)));
 				} else {
 					canvas.innerHTML = '';
-					drawMelody(renderer);
+					drawMelody(renderer, piece.melodyLine);
 				}
 			})
 		);

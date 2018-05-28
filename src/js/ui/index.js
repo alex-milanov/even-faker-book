@@ -27,7 +27,9 @@ module.exports = ({state, actions}) => section('#ui', [
 			}
 		})
 	]),
-	h2('So What'),
-	div(`#staff[width=${state.viewport.screen.width}][height=${calcHeight(state.staff.piece, state.staff.mpl)}]`)
+	h2(state.library[state.staff.piece].title),
+	div(`#staff[width=${state.viewport.screen.width}][height=${
+		calcHeight(state.library[state.staff.piece].progression, state.staff.mpl)
+	}]`)
 	// counter({state, actions})
 ]);
