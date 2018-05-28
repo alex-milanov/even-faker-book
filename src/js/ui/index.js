@@ -3,7 +3,7 @@
 // dom
 const {
 	h1, h2, a, div, header, canvas,
-	section, button, span, input
+	section, button, span, input, i
 } = require('iblokz-snabbdom-helpers');
 // components
 
@@ -16,7 +16,7 @@ module.exports = ({state, actions}) => section('#ui', [
 			on: {
 				click: ev => actions.toggle(['staff', 'showMelody'])
 			}
-		}, 'Toggle Melody'),
+		}, i('.fa.fa-music')),
 		h1('EvenFakerBook'),
 		input(`[type=number][size=3]`, {
 			on: {

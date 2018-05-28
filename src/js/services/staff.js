@@ -6,6 +6,7 @@ const $ = Rx.Observable;
 const time = require('../util/time');
 const {Flow: VF} = require('vexflow');
 const StaveText = require('vexflow/src/stavetext').StaveText;
+// const Parser = require('vexflow/src/parser').Parser;
 
 window.VF = VF;
 window.StaveText = StaveText;
@@ -41,38 +42,24 @@ const drawMeasure = (context, chord, mi = 0, x = 10, y = 40, w = 800, h = 70, mp
 	stave.setContext(context).draw();
 };
 
-const drawMelody = context => {
-	// Create a stave of width 400 at position 10, 40 on the canvas.
-	var stave = new VF.Stave(0, 0, 400);
+const drawMelody = renderer => {
+	var vf = new VF.Factory({renderer});
+	var score = vf[`EasyScore`]();
+	var system = vf[`System`]();
+	system.addStave({
+		options: {
+			x: 10,
+			y: 40,
+			width: 300
+		},
+		voices: [score.voice(
+			score.notes('B4/8/r')
+				.concat(score.beam(score.notes('B3/8, F4, G4')))
+				.concat(score.beam(score.notes('A4/8, B4, C5, A4', {stem: 'up'})))
+		)]
+	}).addClef('treble').addTimeSignature('4/4');
 
-	// Add a clef and time signature.
-	stave.addClef("treble").addTimeSignature("4/4");
-
-	var notes = [
-		// A quarter-note C.
-		new VF.StaveNote({clef: "treble", keys: ["b/3"], duration: "q"}),
-
-		// A quarter-note D.
-		new VF.StaveNote({clef: "treble", keys: ["f/4"], duration: "q"}),
-
-		// A quarter-note rest. Note that the key (b/4) specifies the vertical
-		// position of the rest.
-		new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
-
-		// A C-Major chord.
-		new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q"})
-	];
-
-	// Create a voice in 4/4 and add above notes
-	var voice = new VF.Voice({num_beats: 4, beat_value: 4});
-	voice.addTickables(notes);
-
-	// Format and justify the notes to 400 pixels.
-	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
-
-	voice.draw(context, stave);
-	// Connect it to the rendering context and draw!
-	stave.setContext(context).draw();
+	vf.draw();
 };
 
 const hook = ({state$, actions}) => {
@@ -93,19 +80,20 @@ const hook = ({state$, actions}) => {
 				const {width} = state.viewport.screen;
 				let height = calcHeight(state.staff.piece, state.staff.mpl);
 				// Configure the rendering context.
-				renderer.resize(width, height);
-				var context = renderer.getContext();
-				context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
 				// Create a stave of width 400 at position 10, 40 on the canvas.
 				if (!state.staff.showMelody) {
+					renderer.resize(width, height);
+					var context = renderer.getContext();
+					context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 					let tx = 0;
 					state.staff.piece.forEach((part, k) =>
 							part.forEach((chord, i) =>
 								drawMeasure(context, chord, i, 10,
 									calcHeight(state.staff.piece.slice(0, k), state.staff.mpl), width, 70, state.staff.mpl)));
 				} else {
-					drawMelody(context);
+					canvas.innerHTML = '';
+					drawMelody(renderer);
 				}
 			})
 		);

@@ -2383,6 +2383,8 @@ h1, h2, h3, h4 {
       box-sizing: border-box;
       height: 50px;
       line-height: 50px;
+      width: 50px;
+      font-size: 2em;
       float: left; }
     #ui header h1 {
       display: inline-block;
