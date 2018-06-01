@@ -5,7 +5,9 @@ const Rx = require('rx');
 const $ = Rx.Observable;
 const time = require('../util/time');
 const {Flow: VF} = require('vexflow');
-const StaveText = require('vexflow/src/stavetext').StaveText;
+const {StaveText} = require('vexflow/src/stavetext');
+const {Barline} = require('vexflow/src/stavebarline');
+const {StaveModifier} = require('vexflow/src/stavemodifier');
 // const Parser = require('vexflow/src/parser').Parser;
 
 window.VF = VF;
@@ -21,17 +23,32 @@ const drawMeasure = (context, chord, mi = 0, x = 10, y = 40, w = 800, h = 70, mp
 	var stave = new VF.Stave(x + (mi % mpl) * width, y + ((mi - (mi % mpl)) / mpl * h), width, {
 		num_lines: 5,
 		fill_style: '#ffffff',
-		left_bar: mi === 0 || (mi % mpl) > 0
+		left_bar: mi === 0 || (mi % mpl) > 0,
+		right_bar: (mi % mpl) === mpl - 1 && !(chord.modifiers)
 	});
 
-	var chordSymbol = new StaveText(chord, 3, {
-		shift_y: 54,
-		shift_x: 0
-	});
+	var chordSymbol = new StaveText(
+		typeof chord === 'string' ? chord : chord.chord,
+		3,
+		{
+			shift_y: 54,
+			shift_x: 0
+		}
+	);
 
 	// chordSymbol.setFont("Georgia", 10, "");
 
 	stave.addModifier(chordSymbol);
+
+	if (typeof chord === 'object' && chord.modifiers) {
+		chord.modifiers.forEach(mod => {
+			if (mod[0] === 'Barline') {
+				let modifier = new Barline(Barline.type[mod[1]]);
+				if (mod[2]) modifier.setPosition(StaveModifier.Position[mod[2]]);
+				stave.addModifier(modifier);
+			}
+		});
+	}
 
 	// Add a clef and time signature.
 	if (mi === 0 && y === 0) stave

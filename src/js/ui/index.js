@@ -3,7 +3,7 @@
 // dom
 const {
 	h1, h2, a, div, header, canvas,
-	section, button, span, input, i
+	section, button, span, input, i, ul, li
 } = require('iblokz-snabbdom-helpers');
 // components
 
@@ -27,7 +27,18 @@ module.exports = ({state, actions}) => section('#ui', [
 			}
 		})
 	]),
-	h2(state.library[state.staff.piece].title),
+	h2(
+		span('.dropdown', {style: {float: 'none'}}, [
+			span('.handle', state.library[state.staff.piece].title),
+			ul(state.library
+				.map((data, piece) => ({data, piece}))
+				.filter(({piece}) => piece !== state.staff.piece)
+				.map(({data, piece}) =>
+					li({on: {click: () => actions.set(['staff', 'piece'], piece)}},
+						span(data.title))
+				))
+		])
+	),
 	div(`#staff[width=${state.viewport.screen.width}][height=${
 		calcHeight(state.library[state.staff.piece].progression, state.staff.mpl)
 	}]`)
