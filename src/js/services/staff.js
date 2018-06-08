@@ -8,6 +8,7 @@ const {Flow: VF} = require('vexflow');
 const {StaveText} = require('vexflow/src/stavetext');
 const {Barline} = require('vexflow/src/stavebarline');
 const {StaveModifier} = require('vexflow/src/stavemodifier');
+const {StaveSection} = require('vexflow/src/stavesection');
 // const Parser = require('vexflow/src/parser').Parser;
 
 window.VF = VF;
@@ -18,7 +19,9 @@ let unhook = {};
 const calcHeight = (piece, mpl, lh = 70) =>
 	piece.reduce((h, part) => h + (part.length - (part.length % mpl)) / mpl * lh, 0);
 
-const drawMeasure = (context, chord, mi = 0, x = 10, y = 40, w = 800, h = 70, mpl = 4) => {
+const sections = ['A', 'B', 'C', 'D'];
+
+const drawMeasure = (context, chord, mi = 0, section = 0, x = 10, y = 40, w = 800, h = 70, mpl = 4) => {
 	let width = (w / mpl) - 20;
 	var stave = new VF.Stave(x + (mi % mpl) * width, y + ((mi - (mi % mpl)) / mpl * h), width, {
 		num_lines: 5,
@@ -26,6 +29,15 @@ const drawMeasure = (context, chord, mi = 0, x = 10, y = 40, w = 800, h = 70, mp
 		left_bar: mi === 0 || (mi % mpl) > 0,
 		right_bar: (mi % mpl) === mpl - 1 && !(chord.modifiers)
 	});
+
+	if (mi === 0) {
+		const staveSection = new StaveSection(sections[section],
+			y === 0
+				? chord.modifiers ? -31 : -11
+				: 8,
+			y * 0.01 + 15);
+		stave.addModifier(staveSection);
+	}
 
 	var chordSymbol = new StaveText(
 		typeof chord === 'string' ? chord : chord.chord,
@@ -114,7 +126,7 @@ const hook = ({state$, actions}) => {
 					let tx = 0;
 					progression.forEach((part, k) =>
 							part.forEach((chord, i) =>
-								drawMeasure(context, chord, i, 10,
+								drawMeasure(context, chord, i, k, 40,
 									calcHeight(progression.slice(0, k), state.staff.mpl), width, 70, state.staff.mpl)));
 				} else {
 					canvas.innerHTML = '';
